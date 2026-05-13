@@ -84,8 +84,8 @@ async function getCreateUpdateUsers() {
     };
 
     if(jsonArray.length>0){
-        const srno = await logsRepo.updateLog(null, "getCreateUpdateUsers", JSON.stringify(payload), null);
-        const response = await fetch(url,{
+      const srno = await logsRepo.updateLog(null, "getCreateUpdateUsers", JSON.stringify(payload), null);
+      const response = await fetch(url,{
         method:'POST', // or 'PUT' / 'PATCH'
         headers: {
           Authorization: token,
@@ -202,6 +202,7 @@ async function verifyUserDetail(data) {
   }
 }
 
+//Update Waiting Users
 async function updateWaitingUsers() {
   try{
     console.log('updateWaitingUsers()', new Date());
@@ -238,6 +239,7 @@ async function updateWaitingUsers() {
   }  
 }
 
+//Deactivate Users
 async function deactivateUser() {
   const pool = await sql.connect(dbconfig);
   var result = await pool.request().execute('PROC_MTRGETSUSPENDEDUSERS');     // Call the stored procedure
@@ -284,6 +286,6 @@ app.listen(port, () => {
   setInterval(getCreateUpdateUsers,minInterval*60*1000);
   updateWaitingUsers();
   setInterval(updateWaitingUsers,30*60*1000);
-  // deactivateUser();
-  // setInterval(deactivateUser,deactivateUserInterval*60*60*1000);
+  deactivateUser();
+  setInterval(deactivateUser,deactivateUserInterval*60*60*1000);
 });
