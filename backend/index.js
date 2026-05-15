@@ -6,6 +6,8 @@ const sql = require('mssql');
 const PropertiesReader = require('properties-reader');
 const fs = require('fs');
 
+app.use(express.json());
+
 // Load the properties file
 const path = require('path');
 console.log(
@@ -273,6 +275,49 @@ async function deactivateUser() {
     console.error('Error:', error);
   }
 }
+
+//Get List Of Certificate By Date Range
+async function getlistofCertificateByDate(body) {
+  const url = mainUrl+'GetlistofCertificateByDate';
+  const {datestart, dateend} = body;
+  // const payload={
+  //   users: respData
+  // };
+
+  // console.log("deactivateUser:", JSON.stringify(payload));
+  const srno = await logsRepo.updateLog(null, "getlistofCertificateByDate", JSON.stringify(body), null);
+       
+  try {
+    const response = await fetch(url, {
+      method: 'POST', // or 'PUT' / 'PATCH'
+      headers: {
+        Authorization: token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    const data = await response.json();
+    console.log('Success:', JSON.stringify(data));
+    await logsRepo.updateLog(srno, "getlistofCertificateByDate", JSON.stringify(body), JSON.stringify(data));
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+app.post('/api/getlistofCertificateByDate', async(req, res)=>{
+  try{
+      const {datestart, dateend} = req.body;
+      console.log("getlistofCertificateByDate: ",JSON.stringify(req.body));
+      const resp=await getlistofCertificateByDate(req.body);
+      res.status(200).json({data: resp});
+  }catch(err){
+    console.log(err);
+      res.status(500).json({data: err, column:null});
+  }
+});
 
 //getExternalData();
 
