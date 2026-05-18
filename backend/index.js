@@ -4,9 +4,12 @@ const port = 8000;
 //Database connection
 const sql = require('mssql');
 const PropertiesReader = require('properties-reader');
+//const PropertiesReader = PropertiesReaderImport.default || PropertiesReaderImport;
 const fs = require('fs');
+const helmet = require('helmet');
 
 app.use(express.json());
+app.use(helmet());
 
 // Load the properties file
 const path = require('path');
@@ -26,15 +29,15 @@ const minInterval = properties.get('db.timeIntervalInMinutes');
 const deactivateUserInterval = properties.get('db.deactivateUserIntervalInHrs');
 
 var dbconfig={
-    server: dbServer,
-    database: dbDaba,
-    user: dbUser,
-    password: dbPass,
-    options:{
-        trustServerCertificate: true
-    },
-    connectionTimeout: 15000,  // ms for connecting
-    requestTimeout: 60000    
+  server: dbServer,
+  database: dbDaba,
+  user: dbUser,
+  password: dbPass,
+  options:{
+      trustServerCertificate: true
+  },
+  connectionTimeout: 15000,  // ms for connecting
+  requestTimeout: 60000    
 }
 
 

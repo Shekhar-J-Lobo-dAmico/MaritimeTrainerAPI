@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "helmet": "^8.1.0",
+    "properties-reader": "^3.0.1"
+  }
+}
