@@ -27,6 +27,7 @@ const dbPass = properties.get('db.password').toString();
 const token = properties.get('db.token');
 const minInterval = properties.get('db.timeIntervalInMinutes');
 const deactivateUserInterval = properties.get('db.deactivateUserIntervalInHrs');
+const mainUrl = properties.get('apiUrl');
 
 var dbconfig={
   server: dbServer,
@@ -40,10 +41,7 @@ var dbconfig={
   requestTimeout: 60000    
 }
 
-
 const logsRepo = require('./repositories/logs.repositories');
-
-const mainUrl='https://damico.staging.maritimetrainer.com/webservice/restful/server.php/';
 
 //Create/Update Users
 async function getCreateUpdateUsers() {
